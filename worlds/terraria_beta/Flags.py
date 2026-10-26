@@ -33,6 +33,7 @@ rule_flags = [
     "Health",
     "Quarter Fruit",
     "Depth",
+    "LockedItem"
 ]
 
 # Flags that indicate the attached event may be necessary for progression
@@ -83,6 +84,8 @@ def invalid_flag(flags: List[str], options: TerrariaOptions):
                 valid_flag = options.fishing_achievements.value
             case "Depth":
                 valid_flag = options.randomize_depth.value
+            case "LockedItem":
+                valid_flag = True
         if not valid_flag:
             return True
     return False

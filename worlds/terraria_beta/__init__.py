@@ -268,26 +268,34 @@ class TerrariaWorld(CachedRuleBuilderWorld):
         bad_events = set()
         events_to_evaluate = {}
 
-        def mark_progression(operator, conditions):
+        forced_locations = set()
+
+        def mark_progression(operator, conditions, forced=False):
             for condition in conditions:
                 if condition.type == COND_ITEM:
-                    prog = condition.condition in self.progression
-                    self.progression.add(loc_to_item[condition.condition])
-                    rule = rules[rule_indices[condition.condition]]
-                    if (
-                            not prog
-                            and not any(is_location_is_item(rule.flags, self.options))
-                    ):
-                        mark_progression(rule.operator, rule.conditions)
+                    item_rule_name = condition.condition
+                    prog = item_rule_name in self.progression
+                    
+                    #if forced:
+                    #    print(item_rule_name)
+                    
+                    self.progression.add(loc_to_item.get(item_rule_name, item_rule_name))
+                    if forced:
+                        forced_locations.add(item_rule_name)  # Track for location duplication
+                    
+                    if item_rule_name in rule_indices:
+                        rule = rules[rule_indices[item_rule_name]]
+                        if not prog and not any(is_location_is_item(rule.flags, self.options)):
+                            mark_progression(rule.operator, rule.conditions, forced=forced)
                 elif condition.type == COND_LOC:
                     rule = rules[rule_indices[condition.condition]]
-                    mark_progression(rule.operator, rule.conditions)
+                    mark_progression(rule.operator, rule.conditions, forced=forced)
                 elif condition.type == COND_GROUP:
                     operator, conds = condition.condition
                     rule = self.create_rule_ini(operator, conds)
                     if isinstance(rule, True_) or isinstance(rule, False_):
                         continue
-                    mark_progression(operator, conds)
+                    mark_progression(operator, conds, forced=forced)
 
         valid_rules = rules[:goal] if goal != 0 else rules
         for rule in valid_rules:
@@ -296,8 +304,11 @@ class TerrariaWorld(CachedRuleBuilderWorld):
                 continue
 
             if rule.name in goal_locations:
-                self.progression.add(loc_to_item[rule.name])
-                mark_progression(rule.operator, rule.conditions)
+                self.progression.add(loc_to_item.get(rule.name, rule.name))
+                mark_progression(rule.operator, rule.conditions, forced=False)
+            elif rule.name == "Terra Blade":
+                forced_locations.add(rule.name)
+                mark_progression(rule.operator, rule.conditions, forced=True)
 
             for flag in rule.flags:
                 if flag in special_events:
@@ -317,6 +328,7 @@ class TerrariaWorld(CachedRuleBuilderWorld):
                 locations.append(rule.name)
                 if "Npc" in rule.flags:
                     self.npcs_to_randomize.add(rule.name)
+                    
             if is_item and not ("Achievement" in rule.flags and rule.name not in goal_locations):
                 # Item
                 for i in range(progressive_to_count.get(rule.name) or 1):
@@ -328,6 +340,8 @@ class TerrariaWorld(CachedRuleBuilderWorld):
                 locations.append(rule.name)
                 events.append(rule.name)
                 items.append(rule.name)
+                
+        
 
         # Audit locations, mark progression
         def unreachable_rules(rule: Rule) -> Set[str]:
@@ -360,6 +374,22 @@ class TerrariaWorld(CachedRuleBuilderWorld):
         for name in self.ter_rules:
             if name in events and unreachable_rules(self.ter_rules[name]):
                 bad_events.add(name)
+
+        # Process locations marked as a pre req for the target
+        for name in forced_locations:
+            rule = rules[rule_indices[name]]
+            print(f"{rule.name} : {rule.flags} : {"LockedItem" in rule.flags} : {rule.name not in locations}")
+
+            # Only consider explicitly allowed items (marked with "LockedItem")
+            if "LockedItem" in rule.flags:
+                print(rule.name)
+                items.append(rule.name)
+                component_name = rule.name + " Component"
+                locations.append(component_name)
+                location_count += 1
+                
+                rule_indices[component_name] = rule_indices[rule.name]
+                self.ter_rules[component_name] = built_rule
 
         bad_locs = set()
         for loc in locations:
@@ -441,7 +471,10 @@ class TerrariaWorld(CachedRuleBuilderWorld):
 
         for location in self.ter_locations:
             rule = rules[rule_indices[location]]
-            if "Npc" in rule.flags and not self.options.randomize_npcs.value:
+            if location.endswith(" Component"):
+                base_name = location.rsplit(" Component", 1)[0]
+                location_id = location_name_to_id.get(base_name)
+            elif "Npc" in rule.flags and not self.options.randomize_npcs.value:
                 location_id = None
             else:
                 location_id = location_name_to_id.get(location)
@@ -482,6 +515,10 @@ class TerrariaWorld(CachedRuleBuilderWorld):
 
         for location in self.ter_locations:
             rule = rules[rule_indices[location]]
+            
+            if location.endswith(" Component"):
+                continue
+            
             is_loc, _ = is_location_is_item(rule.flags, self.options)
             if not is_loc:
                 if location in self.progression:
