@@ -161,6 +161,13 @@ class FishingAchievements(Toggle):
 
     display_name = "Fishing Quest Achievements"
 
+class ZenithComponents(Toggle):
+    """
+    Adds Zenith Crafting Components as checks.
+    Will not include components that appear after the designated goal.
+    """
+    
+
 
 class FillExtraChecksWith(Choice):
     """
@@ -238,6 +245,7 @@ ter_option_groups = [
         CraftingAchievements,
         GrindyAchievements,
         FishingAchievements,
+        ZenithComponents
     ]),
     OptionGroup("Items", [
         FillExtraChecksWith,
@@ -265,6 +273,7 @@ class TerrariaOptions(PerGameCommonOptions):
     crafting_achievements: CraftingAchievements
     grindy_achievements: GrindyAchievements
     fishing_achievements: FishingAchievements
+    zenith_components: ZenithComponents
     fill_extra_checks_with: FillExtraChecksWith
     fishing_skips: FishingSkips
     shimmer_skips: ShimmerSkips

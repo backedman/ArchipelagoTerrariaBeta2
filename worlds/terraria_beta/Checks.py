@@ -727,7 +727,7 @@ def read_data() -> Tuple[
             location_name_to_id[rule.name] = next_id
             next_id += 1
         if "LockedItem" in rule.flags:
-            location_name_to_id[f"{rule.name + " (Component)"}"] = next_id
+            location_name_to_id[f"{rule.name + " Component"}"] = next_id
             next_id += 1 
 
     return (

@@ -171,6 +171,7 @@ class TerrariaWorld(CachedRuleBuilderWorld):
             "crafting_achievements": slot_data["crafting_achievements"],
             "grindy_achievements": slot_data["grindy_achievements"],
             "fishing_achievements": slot_data["fishing_achievements"],
+            "zenith_components": slot_data["zenith_components"],
             "fill_extra_checks_with": slot_data["fill_extra_checks_with"],
             "shimmer_skips": slot_data["shimmer_skips"],
             "health_logic": slot_data["health_logic"],
@@ -298,7 +299,13 @@ class TerrariaWorld(CachedRuleBuilderWorld):
                     mark_progression(operator, conds, forced=forced)
 
         valid_rules = rules[:goal] if goal != 0 else rules
-        valid_rules.append(rules[rule_indices["Zenith"]])
+        if self.options.zenith_components: #Add Zenith and all item children as locations (the location will be listed as (ITEM + Component))
+            rule = rules[rule_indices["Zenith"]]
+            valid_rules.append(rule)
+            forced_locations.add(rule.name)
+            mark_progression(rule.operator, rule.conditions, forced=True)
+            
+            
         for rule in valid_rules:
 
             if invalid_flag(rule.flags, self.options) and rule.name not in goal_locations:
@@ -307,9 +314,6 @@ class TerrariaWorld(CachedRuleBuilderWorld):
             if rule.name in goal_locations:
                 self.progression.add(loc_to_item.get(rule.name, rule.name))
                 mark_progression(rule.operator, rule.conditions, forced=False)
-            elif rule.name == "Zenith": #Add Zenith and all item children as locations (the location will be listed as (ITEM + (Component)))
-                forced_locations.add(rule.name)
-                mark_progression(rule.operator, rule.conditions, forced=True)
 
             for flag in rule.flags:
                 if flag in special_events:
@@ -386,7 +390,7 @@ class TerrariaWorld(CachedRuleBuilderWorld):
             if "LockedItem" in rule.flags and rule_indices[rule.name] <= goal:
                 print(rule.name)
                 items.append(rule.name)
-                component_name = rule.name + " (Component)"
+                component_name = rule.name + " Component"
                 locations.append(component_name)
                 location_count += 1
                 
@@ -474,8 +478,8 @@ class TerrariaWorld(CachedRuleBuilderWorld):
 
         for location in self.ter_locations:
             rule = rules[rule_indices[location]]
-            #if location.endswith(" Component"):
-            #    location_id = location_name_to_id.get(location)
+            if location.endswith(" Component"):
+                location_id = location_name_to_id.get(location)
             if "Npc" in rule.flags and not self.options.randomize_npcs.value:
                 location_id = None
             else:
@@ -518,7 +522,7 @@ class TerrariaWorld(CachedRuleBuilderWorld):
         for location in self.ter_locations:
             rule = rules[rule_indices[location]]
             
-            if location.endswith(" (Component)"):
+            if location.endswith(" Component"):
                 continue
             
             is_loc, _ = is_location_is_item(rule.flags, self.options)
@@ -716,6 +720,7 @@ class TerrariaWorld(CachedRuleBuilderWorld):
             "crafting_achievements": self.options.crafting_achievements.value,
             "grindy_achievements": self.options.grindy_achievements.value,
             "fishing_achievements": self.options.fishing_achievements.value,
+            "zenith_components": self.options.zenith_components.value,
             "fill_extra_checks_with": self.options.fill_extra_checks_with.value,
             "shimmer_skips": self.options.shimmer_skips.value,
             "health_logic": self.options.health_logic.value,
