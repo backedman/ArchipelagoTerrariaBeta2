@@ -281,7 +281,7 @@ class TerrariaWorld(CachedRuleBuilderWorld):
                     
                     self.progression.add(loc_to_item.get(item_rule_name, item_rule_name))
                     if forced:
-                        forced_locations.add(item_rule_name)  # Track for location duplication
+                        forced_locations.add(item_rule_name)  # Add location as a component
                     
                     if item_rule_name in rule_indices:
                         rule = rules[rule_indices[item_rule_name]]
@@ -298,6 +298,7 @@ class TerrariaWorld(CachedRuleBuilderWorld):
                     mark_progression(operator, conds, forced=forced)
 
         valid_rules = rules[:goal] if goal != 0 else rules
+        valid_rules.append(rules[rule_indices["Zenith"]])
         for rule in valid_rules:
 
             if invalid_flag(rule.flags, self.options) and rule.name not in goal_locations:
@@ -306,7 +307,7 @@ class TerrariaWorld(CachedRuleBuilderWorld):
             if rule.name in goal_locations:
                 self.progression.add(loc_to_item.get(rule.name, rule.name))
                 mark_progression(rule.operator, rule.conditions, forced=False)
-            elif rule.name == "Terra Blade":
+            elif rule.name == "Zenith": #Add Zenith and all item children as locations (the location will be listed as (ITEM + (Component)))
                 forced_locations.add(rule.name)
                 mark_progression(rule.operator, rule.conditions, forced=True)
 
@@ -379,15 +380,17 @@ class TerrariaWorld(CachedRuleBuilderWorld):
         for name in forced_locations:
             rule = rules[rule_indices[name]]
             print(f"{rule.name} : {rule.flags} : {"LockedItem" in rule.flags} : {rule.name not in locations}")
+            
 
             # Only consider explicitly allowed items (marked with "LockedItem")
-            if "LockedItem" in rule.flags:
+            if "LockedItem" in rule.flags and rule_indices[rule.name] <= goal:
                 print(rule.name)
                 items.append(rule.name)
-                component_name = rule.name + " Component"
+                component_name = rule.name + " (Component)"
                 locations.append(component_name)
                 location_count += 1
                 
+                # Make sure the location has the same pre reqs as the original (locked) location
                 rule_indices[component_name] = rule_indices[rule.name]
                 self.ter_rules[component_name] = built_rule
 
@@ -471,10 +474,9 @@ class TerrariaWorld(CachedRuleBuilderWorld):
 
         for location in self.ter_locations:
             rule = rules[rule_indices[location]]
-            if location.endswith(" Component"):
-                base_name = location.rsplit(" Component", 1)[0]
-                location_id = location_name_to_id.get(base_name)
-            elif "Npc" in rule.flags and not self.options.randomize_npcs.value:
+            #if location.endswith(" Component"):
+            #    location_id = location_name_to_id.get(location)
+            if "Npc" in rule.flags and not self.options.randomize_npcs.value:
                 location_id = None
             else:
                 location_id = location_name_to_id.get(location)
@@ -516,7 +518,7 @@ class TerrariaWorld(CachedRuleBuilderWorld):
         for location in self.ter_locations:
             rule = rules[rule_indices[location]]
             
-            if location.endswith(" Component"):
+            if location.endswith(" (Component)"):
                 continue
             
             is_loc, _ = is_location_is_item(rule.flags, self.options)
@@ -680,7 +682,8 @@ class TerrariaWorld(CachedRuleBuilderWorld):
 
     def set_rules(self) -> None:
         for location_name in self.ter_locations:
-            location = self.multiworld.get_location(location_name, self.player)
+            display_name = location_name
+            location = self.multiworld.get_location(display_name, self.player)
             rule = rules[rule_indices[location_name]]
             created_rule = self.create_rule_ini(rule.operator, rule.conditions)
             self.set_rule(location, created_rule)

@@ -1,7 +1,7 @@
 // For the logic to account for all skips, these rules would need to be made much more comprehensive
 
 // Starting gear
-Copper Shortsword;
+Copper Shortsword;                  LockedItem;
 Guide;                              Npc;
 
 // Immediately accessible
@@ -51,7 +51,7 @@ Feeling Petty;                      Achievement;                                
 Dog;                                Pet;                                        Zoologist;
 Painter;                            Npc;                                        @npc(8);
 A Rather Blustery Day;              Achievement | Time;
-Enchanted Sword;
+Enchanted Sword;                    LockedItem;
 Pretty in Pink;                     Achievement | Rare;
 Marathon Medalist;                  Achievement | Grindy;
 Angler;                             Npc;
@@ -73,7 +73,7 @@ Mysterious Circuitry;               Calamity;
 Dubious Plating;                    Calamity;
 Charging Station;                   Calamity;
 Codebreaker Base;                   Calamity;
-Starfury;
+Starfury;                           LockedItem;
 Celestial Magnet;
 Clumsy Slime;                       Pet;
 
@@ -122,7 +122,7 @@ There are Some Who Call Him...;     Achievement | Rare;                         
 Lava Charm;                         ;                                           Cavern;
 Demonite Ore;                       ;                                           Cavern | #Eye of Cthulhu | #Evil Boss;
 Demonite Bar;                       ;                                           Demonite Ore;
-Evil Sword;                         ;                                           Demonite Bar;
+Evil Sword;                         LockedItem;                                           Demonite Bar;
 Coin of Deceit;                     Calamity;                                   Demonite Bar | (Shimmer & Ruin Medallion);
 
 // Underground Ice
@@ -148,7 +148,7 @@ Boomstick;                          ;                                           
 Stinger;                            ;                                           Underground;
 Jungle Spores;                      ;                                           Cavern;
 Vine;                               ;                                           Underground;
-Blade of Grass;                     ;                                           Stinger & Jungle Spores & Vine;
+Blade of Grass;                     LockedItem;                                           Stinger & Jungle Spores & Vine;
 Nature's Gift;                      ;                                           Underground;
 Bezoar;                             ;                                           Underground;
 Summoning Potion;                   Minions(1) | Fishing;                       Underground;
@@ -239,7 +239,7 @@ Meteor Hamaxe;                      Hammer(60);                                 
 Hellforge;                          ;                                           Underworld & @pickaxe(60);
 Hellstone;                          ;                                           (@fargo & Demolitionist & Plantera) | (Underworld & (@pickaxe(65) | Wall of Flesh)) | (Shimmer & (Hellstone Bar | Infernal Suevite));
 Hellstone Bar;                      ;                                           Hellstone;
-Fiery Greatsword;                   ;                                           Hellstone Bar;
+Fiery Greatsword;                   LockedItem;                                 Hellstone Bar;
 Molten Hamaxe;                      Hammer(70);                                 Hellstone Bar;
 Molten Pickaxe;                     Pickaxe(100);                               Hellstone Bar;
 Miner for Fire;                     Achievement;                                Molten Pickaxe;
@@ -268,7 +268,7 @@ Diving Gear;                        ;                                           
 // Queen Bee
 Where's My Honey?;                  Achievement;                                Undercavern;
 Queen Bee;                          Location | Item;                            Undercavern & @health(1);
-Bee Keeper;                         ;                                           #Queen Bee;
+Bee Keeper;                         LockedItem;                                 #Queen Bee;
 Bee Wax;                            ;                                           #Queen Bee;
 Bee Armor;                          Armor Minions(2);                           Bee Wax;
 Not the Bees!;                      Achievement;                                #Queen Bee & Bee Armor;
@@ -304,7 +304,7 @@ Mechanic;                           Npc;                                        
 Wire;                               ;                                           Mechanic | (@calamity & (Shimmer & Electrician's Glove));
 Decryption Computer;                Calamity;                                   Mysterious Circuitry & Sunken Sea & Dubious Plating & Wire;
 Actuator;                           ;                                           Mechanic;
-Muramasa;                           ;                                           Dungeon & (~@depth_safety | Cavern);
+Muramasa;                           LockedItem;                                           Dungeon & (~@depth_safety | Cavern);
 Cobalt Shield;                      ;                                           (Dungeon & (~@depth_safety | Cavern)) | (@calamity & Cobalt Bar);
 Obsidian Shield;                    ;                                           Tinkerer's Workshop & Cobalt Shield & Obsidian Skull;
 Elder Slime;                        Pet;                                        Skeletron & Dungeon;
@@ -320,7 +320,7 @@ Jelly-Charged Battery;              Calamity;                                   
 Static Refiner;                     Calamity;                                   Purified Gel & Solidifier;
 Gelpick;                            Calamity | Pickaxe(100);                    Solidifier & Purified Gel & Blighted Gel;
 Statigel Armor;                     Calamity | Armor Minions(1);                Solidifier & Purified Gel & Blighted Gel;
-Night's Edge;                       ;                                           Altar & Evil Sword & Muramasa & Blade of Grass & Fiery Greatsword & (~@calamity | Purified Gel);
+Night's Edge;                       LockedItem;                                           Altar & Evil Sword & Muramasa & Blade of Grass & Fiery Greatsword & (~@calamity | Purified Gel);
 
 // Wall of Flesh
 Deviantt;                           Fargo | Location | Item | Goal;             ((Deviantt NPC & Deviantt) | (Altar & Blood Moon)) & @health(1);
@@ -464,11 +464,11 @@ Mecha Mayhem;                       Achievement | Not Getfixedboi;              
 Hallowed Ore;                       Calamity;                                   (@mech_boss(3) & @pickaxe(180) & Cavern) | (Shimmer & (Chlorophyte Ore | Hallowed Bar));
 Hallowed Bar;                       ;                                           ((#The Twins | #The Destroyer | #Skeletron Prime) & (~@calamity | @mech_boss(3))) | (@calamity & Hardmode Forge & Hallowed Ore) | (Shimmer & Light Disc);
 Hallowed Armor;                     Armor Minions(3);                           Hardmode Anvil & Hallowed Bar;
-Excalibur;                          ;                                           Hardmode Anvil & Hallowed Bar;
+Excalibur;                          LockedItem;                                 Hardmode Anvil & Hallowed Bar;
 Pickaxe Axe;                        Pickaxe(200);                               Hardmode Anvil & Hallowed Bar & Soul of Fright & Soul of Might & Soul of Sight;
 Sanguine Tangerine;                 Calamity | Quarter Fruit;                   Hardmode Anvil & Life Fruit & Blood Orb & Soul of Fright & Soul of Might & Soul of Sight;
 Drax Attax;                         Achievement;                                Pickaxe Axe;
-True Night's Edge;                  ;                                           Hardmode Anvil & Night's Edge & Soul of Fright & Soul of Might & Soul of Sight;
+True Night's Edge;                  LockedItem;                                           Hardmode Anvil & Night's Edge & Soul of Fright & Soul of Might & Soul of Sight;
 Avenger Emblem;                     ;                                           (Tinkerer's Workshop & Emblem & Soul of Might & Soul of Sight & Soul of Fright) | (Shimmer & ((@calamity & (Sand Shark Tooth Necklace | Sigil of Calamitas)) | (~@calamity & (Mechanical Glove | Celestial Emblem))));
 Mechanical Glove;                   ;                                           (Power Glove & Tinkerer's Workshop & Avenger Emblem) | (Shimmer & Fire Gauntlet);
 Celestial Emblem;                   ;                                           (Celestial Magnet & Tinkerer's Workshop & Avenger Emblem) | (Shimmer & Sigil of Calamitas);
@@ -477,7 +477,7 @@ Chlorophyte Ore;                    ;                                           
 Photosynthesis;                     Achievement;                                Chlorophyte Ore;
 Chlorophyte Bar;                    ;                                           (Hardmode Forge & Chlorophyte Ore) | (Shimmer & (Spectre Bar | Shroomite Bar));
 Chlorophyte Armor;                  ;                                           Hardmode Anvil & Chlorophyte Bar;
-True Excalibur;                     ;                                           Hardmode Anvil & Excalibur & Chlorophyte Bar;
+True Excalibur;                     LockedItem;                                 Hardmode Anvil & Excalibur & Chlorophyte Bar;
 Chlorophyte Pickaxe;                Pickaxe(200);                               Hardmode Anvil & Chlorophyte Bar;
 Chlorophyte Warhammer;              Hammer(90);                                 Hardmode Anvil & Chlorophyte Bar;
 
@@ -491,7 +491,7 @@ Ashes of Calamity;                  Calamity;                                   
 
 // Plantera
 The Axe;                            Hammer(100);                                #Plantera;
-Seedler;                            ;                                           #Plantera;
+Seedler;                            LockedItem;                                 #Plantera;
 Living Shard;                       Calamity;                                   #Plantera;
 Tiki Armor;                         Armor Minions(4);                           Witch Doctor & Wall of Flesh & Plantera;
 Hercules Beetle;                    ;                                           Witch Doctor & Wall of Flesh & Plantera;
@@ -575,7 +575,7 @@ Betsy;                              Fargo | Location | Item;                    
 // Martian Madness
 Martian Madness;                    Location | Item;                            ((@fargo & Abominationn NPC) | (Wall of Flesh | (@calamity & Cyborg))) & Golem & @health(4);
 Laser Drill;                        Pickaxe(220);                               #Martian Madness;
-Influx Waver;                       ;                                           #Martian Madness;
+Influx Waver;                       LockedItem;                                 #Martian Madness;
 
 // The Plaguebringer Goliath
 Plague Cell Canister;               Calamity;                                   Golem | (Shimmer & Alchemical Flask) | (@getfixedboi & #Queen Bee);
@@ -595,7 +595,7 @@ Necromantic Scroll;                 Minions(1);                                 
 Papyrus Scarab;                     Minions(1);                                 (Tinkerer's Workshop & Hercules Beetle & Necromantic Scroll) | (@calamity & Statis' Blessing);
 Statis' Blessing;                   Calamity;                                   (Hardmode Anvil & Papyrus Scarab & Pygmy Necklace & Emblem & Holy Water & Essence of Sunlight) | Statis' Curse;
 Pumpking;                           Location | Item;                            (@fargo & Abominationn NPC & Pumpking) | Pumpkin Moon;
-The Horseman's Blade;               ;                                           #Pumpking;
+The Horseman's Blade;               LockedItem;                                 #Pumpking;
 Baleful Harvest;                    Achievement;                                Pumpkin Moon;
 
 // Frost Moon
@@ -655,8 +655,8 @@ Stardust Armor;                     Armor Minions(5);                           
 Moonstone Crown;                    Calamity;                                   (Ancient Manipulator & Feather Crown & Luminite Bar & Fragment & Core of Calamity) | (Shimmer & Nanotech);
 Terrarian;                          ;                                           #Moon Lord;
 Sick Throw;                         Achievement | Rare;                         Terrarian;
-Meowmere;                           ;                                           #Moon Lord;
-Star Wrath;                         ;                                           #Moon Lord;
+Meowmere;                           LockedItem;                                 #Moon Lord;
+Star Wrath;                         LockedItem;                                 #Moon Lord;
 Exodium Cluster;                    Calamity;                                   (Moon Lord & (Wall of Flesh | @pickaxe(225))) | (Shimmer & Uelibloom Ore);
 Normality Relocator;                Calamity;                                   Hardmode Anvil & Rod of Discord & Exodium Cluster & Fragment;
 Unholy Essence;                     Calamity;                                   Moon Lord | #Providence, the Profaned Goddess | (@getfixedboi & Plantera);

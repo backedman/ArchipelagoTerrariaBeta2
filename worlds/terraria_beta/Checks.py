@@ -726,6 +726,9 @@ def read_data() -> Tuple[
                 raise Exception(f"location `{rule.name}` shadows a previous location")
             location_name_to_id[rule.name] = next_id
             next_id += 1
+        if "LockedItem" in rule.flags:
+            location_name_to_id[f"{rule.name + " (Component)"}"] = next_id
+            next_id += 1 
 
     return (
         goals,
