@@ -492,7 +492,7 @@ Ashes of Calamity;                  Calamity;                                   
 // Plantera
 The Axe;                            Hammer(100);                                #Plantera;
 Seedler;                            LockedItem;                                 #Plantera;
-Living Shard;                       Calamity;                                   #Plantera;
+Living Shard;                       LockedItem | Calamity;                                   #Plantera;
 Tiki Armor;                         Armor Minions(4);                           Witch Doctor & Wall of Flesh & Plantera;
 Hercules Beetle;                    ;                                           Witch Doctor & Wall of Flesh & Plantera;
 You and What Army?;                 Achievement;                                @minions(8);
