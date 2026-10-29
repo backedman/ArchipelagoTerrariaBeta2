@@ -148,6 +148,7 @@ class TerrariaWorld(CachedRuleBuilderWorld):
         self.ter_items: List[str]
         self.ter_locations: List[str]
         self.ter_rules = dict()
+        self.components: List[str] = []
 
         self.ter_goals: Dict[str, str]
         self.goal_items: Set[str]
@@ -397,6 +398,7 @@ class TerrariaWorld(CachedRuleBuilderWorld):
                 # Make sure the location has the same pre reqs as the original (locked) location
                 rule_indices[component_name] = rule_indices[rule.name]
                 self.ter_rules[component_name] = built_rule
+                self.components.append(rule.name)
 
         bad_locs = set()
         for loc in locations:
@@ -700,6 +702,7 @@ class TerrariaWorld(CachedRuleBuilderWorld):
             self.set_completion_rule(HasAll(*self.goal_items))
 
     def fill_slot_data(self) -> Dict[str, object]:
+        
         return {
             "goal": list(self.goal_locations),
             "deathlink": bool(self.options.death_link),
@@ -720,7 +723,7 @@ class TerrariaWorld(CachedRuleBuilderWorld):
             "crafting_achievements": self.options.crafting_achievements.value,
             "grindy_achievements": self.options.grindy_achievements.value,
             "fishing_achievements": self.options.fishing_achievements.value,
-            "zenith_components": self.options.zenith_components.value,
+            "components": list(self.components),
             "fill_extra_checks_with": self.options.fill_extra_checks_with.value,
             "shimmer_skips": self.options.shimmer_skips.value,
             "health_logic": self.options.health_logic.value,
